@@ -1,5 +1,5 @@
 {
-  "name": "forgely-frontend",
+  "name": "projectforge-frontend",
   "version": "1.0.0",
   "type": "module",
   "scripts": {
@@ -21,8 +21,5 @@
     "postcss": "^8.4.39",
     "tailwindcss": "^3.4.4",
     "vite": "^5.3.3"
-  },
-  "allowScripts": {
-    "esbuild@0.21.5": true
   }
 }

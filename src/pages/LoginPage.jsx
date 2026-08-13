@@ -39,7 +39,7 @@ const LoginPage = () => {
     setServerError("");
     setLoading(true);
     try {
-      await login("demo@forgely.dev", "demo1234");
+      await login("demo@projectforge.dev", "demo1234");
       navigate("/dashboard");
     } catch (err) {
       setServerError("Demo account unavailable right now — seed the database first.");
@@ -51,7 +51,7 @@ const LoginPage = () => {
   return (
     <div className="mx-auto flex min-h-[80vh] max-w-md flex-col justify-center px-4 py-12">
       <h1 className="mb-1 text-2xl font-bold">Welcome back</h1>
-      <p className="mb-6 text-sm text-slate-500 dark:text-slate-400">Log in to your Forgely workspace.</p>
+      <p className="mb-6 text-sm text-slate-500 dark:text-slate-400">Log in to your ProjectForge workspace.</p>
 
       {serverError && (
         <div className="mb-4 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600 dark:bg-red-900/30 dark:text-red-400">
@@ -87,9 +87,9 @@ const LoginPage = () => {
         </button>
       </form>
 
-      {/* <button onClick={handleDemoLogin} disabled={loading} className="btn-secondary mt-3 w-full">
+      <button onClick={handleDemoLogin} disabled={loading} className="btn-secondary mt-3 w-full">
         Try demo account
-      </button> */}
+      </button>
 
       <div className="my-4 flex items-center gap-3 text-xs text-slate-400">
         <div className="h-px flex-1 bg-slate-200 dark:bg-slate-700" />

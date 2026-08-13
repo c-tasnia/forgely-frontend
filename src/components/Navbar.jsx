@@ -35,7 +35,7 @@ const Navbar = () => {
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
         <Link to="/" className="flex items-center gap-2 text-lg font-bold text-primary">
           <span className="inline-block h-2.5 w-2.5 rounded-full bg-accent" />
-          Forgely
+          ProjectForge
         </Link>
 
         <div className="hidden items-center gap-6 md:flex">

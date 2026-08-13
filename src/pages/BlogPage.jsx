@@ -1,6 +1,6 @@
 const posts = [
   { title: "Why we stopped scoring contribution by commit count alone", date: "Jul 2026", excerpt: "Commits are a terrible proxy for effort — here's what we weighted instead." },
-  { title: "Running a capstone team through Forgely", date: "Jun 2026", excerpt: "A four-person team's workflow from kickoff to final submission." },
+  { title: "Running a capstone team through ProjectForge", date: "Jun 2026", excerpt: "A four-person team's workflow from kickoff to final submission." },
   { title: "Kanban vs. sprints for student teams", date: "May 2026", excerpt: "Why short-lived teams usually do better with a lightweight board than full Scrum." },
 ];
 

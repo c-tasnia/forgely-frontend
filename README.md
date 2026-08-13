@@ -1,4 +1,4 @@
-# Forgely — Frontend
+# ProjectForge — Frontend
 
 React (Vite) + Tailwind. Landing page, auth, role-based dashboard, Kanban board, real-time chat,
 notifications, file uploads, GitHub activity, contribution scoring.
