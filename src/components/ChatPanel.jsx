@@ -1,22 +1,23 @@
 import { useEffect, useRef, useState } from "react";
 import api from "../api/axios.js";
-import { useSocket } from "../context/SocketContext.jsx";
+import { usePusher } from "../context/PusherContext.jsx";
 import { useAuth } from "../context/AuthContext.jsx";
 import { Spinner } from "./UI.jsx";
 
 const formatTime = (dateStr) =>
   new Date(dateStr).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 
-const ChatPanel = ({ projectId, members }) => {
+const ChatPanel = ({ projectId }) => {
   const { user } = useAuth();
-  const { socket, connected } = useSocket();
+  const { pusher, connected, enabled } = usePusher();
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [input, setInput] = useState("");
+  const [sending, setSending] = useState(false);
   const [typingUsers, setTypingUsers] = useState({}); // userId -> name
-  const [online, setOnline] = useState([]);
+  const [online, setOnline] = useState(0);
   const bottomRef = useRef(null);
-  const typingTimeout = useRef(null);
+  const lastTypingSent = useRef(0);
 
   useEffect(() => {
     api.get(`/projects/${projectId}/messages`).then(({ data }) => {
@@ -26,15 +27,13 @@ const ChatPanel = ({ projectId, members }) => {
   }, [projectId]);
 
   useEffect(() => {
-    if (!socket || !connected) return;
+    if (!pusher || !connected) return;
 
-    socket.emit("project:join", { projectId });
+    const channel = pusher.subscribe(`presence-project-${projectId}`);
 
-    const onMessage = (msg) => {
-      if (msg.projectId !== projectId) return;
-      setMessages((prev) => [...prev, msg]);
-    };
+    const onMessage = (msg) => setMessages((prev) => [...prev, msg]);
     const onTyping = ({ userId, name }) => {
+      if (userId === user?.id) return;
       setTypingUsers((prev) => ({ ...prev, [userId]: name }));
       setTimeout(() => {
         setTypingUsers((prev) => {
@@ -44,50 +43,60 @@ const ChatPanel = ({ projectId, members }) => {
         });
       }, 3000);
     };
-    const onPresence = ({ projectId: pid, online: onlineIds }) => {
-      if (pid === projectId) setOnline(onlineIds);
-    };
+    const updateCount = () => setOnline(channel.members?.count || 0);
 
-    socket.on("chat:message", onMessage);
-    socket.on("chat:typing", onTyping);
-    socket.on("presence:update", onPresence);
+    channel.bind("pusher:subscription_succeeded", updateCount);
+    channel.bind("pusher:member_added", updateCount);
+    channel.bind("pusher:member_removed", updateCount);
+    channel.bind("chat:message", onMessage);
+    channel.bind("chat:typing", onTyping);
 
     return () => {
-      socket.emit("project:leave", { projectId });
-      socket.off("chat:message", onMessage);
-      socket.off("chat:typing", onTyping);
-      socket.off("presence:update", onPresence);
+      pusher.unsubscribe(`presence-project-${projectId}`);
     };
-  }, [socket, connected, projectId]);
+  }, [pusher, connected, projectId, user?.id]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const handleSend = (e) => {
+  const handleSend = async (e) => {
     e.preventDefault();
-    if (!input.trim() || !socket) return;
-    socket.emit("chat:message", { projectId, content: input.trim() });
-    setInput("");
+    if (!input.trim()) return;
+    setSending(true);
+    try {
+      await api.post(`/projects/${projectId}/messages`, { content: input.trim() });
+      setInput("");
+    } catch {
+      // message just won't appear — the input keeps the draft so the user can retry
+    } finally {
+      setSending(false);
+    }
   };
 
   const handleTyping = (e) => {
     setInput(e.target.value);
-    if (!socket) return;
-    clearTimeout(typingTimeout.current);
-    socket.emit("chat:typing", { projectId });
+    const now = Date.now();
+    if (now - lastTypingSent.current > 2000) {
+      lastTypingSent.current = now;
+      api.post(`/projects/${projectId}/typing`).catch(() => {});
+    }
   };
 
-  const typingNames = Object.values(typingUsers).filter((n) => n !== user?.name);
+  const typingNames = Object.values(typingUsers);
 
   return (
     <div className="card flex h-[520px] flex-col p-4">
       <div className="mb-3 flex items-center justify-between">
         <h2 className="text-sm font-semibold">Project Chat</h2>
-        <div className="flex items-center gap-1 text-xs text-slate-400">
-          <span className={`h-2 w-2 rounded-full ${connected ? "bg-emerald-500" : "bg-slate-300"}`} />
-          {online.length} online
-        </div>
+        {enabled ? (
+          <div className="flex items-center gap-1 text-xs text-slate-400">
+            <span className={`h-2 w-2 rounded-full ${connected ? "bg-emerald-500" : "bg-slate-300"}`} />
+            {online} online
+          </div>
+        ) : (
+          <span className="text-xs text-slate-400">Real-time not configured</span>
+        )}
       </div>
 
       <div className="flex-1 space-y-3 overflow-y-auto pr-1">
@@ -123,13 +132,12 @@ const ChatPanel = ({ projectId, members }) => {
       <form onSubmit={handleSend} className="mt-2 flex gap-2">
         <input
           className="input-field flex-1"
-          placeholder={members?.length > 1 ? "Message the team... use @name to mention" : "Type a message..."}
+          placeholder="Message the team... use @name to mention"
           value={input}
           onChange={handleTyping}
-          disabled={!connected}
         />
-        <button type="submit" disabled={!connected || !input.trim()} className="btn-primary">
-          Send
+        <button type="submit" disabled={sending || !input.trim()} className="btn-primary">
+          {sending ? <Spinner /> : "Send"}
         </button>
       </form>
     </div>

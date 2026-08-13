@@ -21,13 +21,13 @@ const steps = [
 ];
 
 const testimonials = [
-  { name: "Tasnia R.", role: "CS Student", quote: "We used ProjectForge for our capstone — the contribution tracking made grading group work so much fairer." },
+  { name: "Tasnia R.", role: "CS Student", quote: "We used Forgely for our capstone — the contribution tracking made grading group work so much fairer." },
   { name: "Rahim K.", role: "Backend Dev", quote: "Finally a tool that ties GitHub activity to actual task progress instead of two disconnected dashboards." },
   { name: "Nabila S.", role: "UI/UX Designer", quote: "The Kanban board plus chat means I never have to leave the project workspace." },
 ];
 
 const faqs = [
-  { q: "Is ProjectForge free for students?", a: "Yes — the core platform is free for individual students and small teams." },
+  { q: "Is Forgely free for students?", a: "Yes — the core platform is free for individual students and small teams." },
   { q: "Does it replace GitHub?", a: "No, it connects to your existing GitHub repos and layers project management on top." },
   { q: "Can I use it for non-coding projects?", a: "Yes, GitHub integration is optional — Kanban, chat, and analytics work standalone." },
 ];
@@ -43,7 +43,7 @@ const LandingPage = () => (
         Build your project. <span className="text-primary">Build your team.</span>
       </h1>
       <p className="max-w-xl text-slate-600 dark:text-slate-300">
-        ProjectForge helps student and developer teams plan tasks, track GitHub activity, chat in real time,
+        Forgely helps student and developer teams plan tasks, track GitHub activity, chat in real time,
         and see who's actually contributing.
       </p>
       <div className="flex gap-3">
@@ -130,7 +130,7 @@ const LandingPage = () => (
     {/* Testimonials */}
     <section className="bg-slate-50 py-16 dark:bg-slate-900/40">
       <div className="mx-auto max-w-6xl px-4">
-        <h2 className="mb-10 text-center text-3xl font-bold">Teams shipping with ProjectForge</h2>
+        <h2 className="mb-10 text-center text-3xl font-bold">Teams shipping with Forgely</h2>
         <div className="grid gap-6 sm:grid-cols-3">
           {testimonials.map((t) => (
             <div key={t.name} className="card p-6">
@@ -159,7 +159,7 @@ const LandingPage = () => (
     {/* Newsletter / CTA */}
     <section className="bg-primary py-16 text-center text-white">
       <h2 className="mb-3 text-2xl font-bold">Ready to forge your next project?</h2>
-      <p className="mb-6 text-sm text-white/80">Join teams already shipping faster with ProjectForge.</p>
+      <p className="mb-6 text-sm text-white/80">Join teams already shipping faster with Forgely.</p>
       <Link to="/register" className="rounded-lg bg-white px-5 py-2 font-medium text-primary">
         Create your free account
       </Link>

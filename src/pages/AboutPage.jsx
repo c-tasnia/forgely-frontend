@@ -1,8 +1,8 @@
 const AboutPage = () => (
   <div className="mx-auto max-w-3xl px-4 py-16">
-    <h1 className="mb-4 text-3xl font-bold">About ProjectForge</h1>
+    <h1 className="mb-4 text-3xl font-bold">About Forgely</h1>
     <p className="mb-4 text-slate-600 dark:text-slate-300">
-      ProjectForge started as a way to stop juggling GitHub, Trello, and Discord separately for every group
+      Forgely started as a way to stop juggling GitHub, Trello, and Discord separately for every group
       project. Instead of three disconnected tools, teams get one workspace where task boards, GitHub activity,
       and team chat all point at the same source of truth.
     </p>

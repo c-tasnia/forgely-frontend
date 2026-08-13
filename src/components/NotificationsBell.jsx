@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api/axios.js";
-import { useSocket } from "../context/SocketContext.jsx";
+import { usePusher } from "../context/PusherContext.jsx";
 import { useAuth } from "../context/AuthContext.jsx";
 
 const timeAgo = (dateStr) => {
@@ -16,7 +16,7 @@ const timeAgo = (dateStr) => {
 
 const NotificationsBell = () => {
   const { user } = useAuth();
-  const { socket } = useSocket();
+  const { pusher, connected } = usePusher();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [notifications, setNotifications] = useState([]);
@@ -31,14 +31,19 @@ const NotificationsBell = () => {
   }, [user]);
 
   useEffect(() => {
-    if (!socket) return;
+    if (!pusher || !connected || !user) return;
+
+    const channel = pusher.subscribe(`private-user-${user.id}`);
     const handler = (notification) => {
       setNotifications((prev) => [notification, ...prev].slice(0, 50));
       setUnreadCount((c) => c + 1);
     };
-    socket.on("notification:new", handler);
-    return () => socket.off("notification:new", handler);
-  }, [socket]);
+    channel.bind("notification:new", handler);
+
+    return () => {
+      pusher.unsubscribe(`private-user-${user.id}`);
+    };
+  }, [pusher, connected, user]);
 
   if (!user) return null;
 

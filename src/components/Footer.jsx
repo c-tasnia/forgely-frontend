@@ -4,7 +4,7 @@ const Footer = () => (
   <footer className="border-t border-slate-200 bg-white dark:border-slate-800 dark:bg-surface-dark">
     <div className="mx-auto grid max-w-7xl grid-cols-2 gap-8 px-4 py-12 sm:px-6 md:grid-cols-4 lg:px-8">
       <div>
-        <h3 className="mb-3 text-lg font-bold text-primary">ProjectForge</h3>
+        <h3 className="mb-3 text-lg font-bold text-primary">Forgely</h3>
         <p className="text-sm text-slate-500 dark:text-slate-400">
           Where student and dev teams plan, build, and ship projects together.
         </p>
@@ -33,11 +33,11 @@ const Footer = () => (
           <a href="https://twitter.com" target="_blank" rel="noreferrer">Twitter</a>
           <a href="https://linkedin.com" target="_blank" rel="noreferrer">LinkedIn</a>
         </div>
-        <p className="mt-3 text-sm text-slate-500 dark:text-slate-400">hello@projectforge.dev</p>
+        <p className="mt-3 text-sm text-slate-500 dark:text-slate-400">hello@forgely.dev</p>
       </div>
     </div>
     <div className="border-t border-slate-200 py-4 text-center text-xs text-slate-400 dark:border-slate-800">
-      © {new Date().getFullYear()} ProjectForge. All rights reserved.
+      © {new Date().getFullYear()} Forgely. All rights reserved.
     </div>
   </footer>
 );

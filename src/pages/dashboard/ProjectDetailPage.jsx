@@ -171,7 +171,7 @@ const ProjectDetailPage = () => {
         </div>
       )}
 
-      {tab === "chat" && <ChatPanel projectId={id} members={project.members} />}
+      {tab === "chat" && <ChatPanel projectId={id} />}
 
       {tab === "files" && <FilesPanel projectId={id} canUpload={canEdit} />}
 
