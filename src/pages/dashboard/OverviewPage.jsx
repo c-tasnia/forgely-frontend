@@ -3,6 +3,7 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pi
 import api from "../../api/axios.js";
 import { useAuth } from "../../context/AuthContext.jsx";
 import { StatCard, SkeletonCard } from "../../components/UI.jsx";
+import PendingInvites from "../../components/PendingInvites.jsx";
 
 const STATUS_LABELS = { todo: "To Do", in_progress: "In Progress", review: "Review", done: "Done" };
 const PIE_COLORS = ["#4F46E5", "#818CF8", "#14B8A6", "#5EEAD4"];
@@ -68,6 +69,8 @@ const OverviewPage = () => {
 
   return (
     <div className="space-y-6">
+      <PendingInvites />
+
       <h1 className="text-2xl font-bold">Welcome back, {user?.name?.split(" ")[0]}</h1>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">

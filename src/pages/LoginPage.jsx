@@ -87,9 +87,9 @@ const LoginPage = () => {
         </button>
       </form>
 
-      {/* <button onClick={handleDemoLogin} disabled={loading} className="btn-secondary mt-3 w-full">
+      <button onClick={handleDemoLogin} disabled={loading} className="btn-secondary mt-3 w-full">
         Try demo account
-      </button> */}
+      </button>
 
       <div className="my-4 flex items-center gap-3 text-xs text-slate-400">
         <div className="h-px flex-1 bg-slate-200 dark:bg-slate-700" />

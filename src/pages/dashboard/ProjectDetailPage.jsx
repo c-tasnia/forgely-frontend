@@ -6,6 +6,7 @@ import GithubActivityPanel from "../../components/GithubActivityPanel.jsx";
 import ContributionPanel from "../../components/ContributionPanel.jsx";
 import ChatPanel from "../../components/ChatPanel.jsx";
 import FilesPanel from "../../components/FilesPanel.jsx";
+import InviteMemberForm from "../../components/InviteMemberForm.jsx";
 import { Spinner } from "../../components/UI.jsx";
 
 const TABS = [
@@ -123,6 +124,7 @@ const ProjectDetailPage = () => {
             </span>
           ))}
         </div>
+        {role === "owner" && <InviteMemberForm projectId={id} onInvited={load} />}
         {canEdit && tab === "board" && (
           <button className="btn-primary ml-auto" onClick={() => setShowForm((s) => !s)}>
             {showForm ? "Cancel" : "+ Add Task"}
